@@ -4,7 +4,7 @@ updateTime();
 function updateTime() {
   var date = new Date();
   renderer.render(
-    '杜文琦几点了? {{ year }} 年 {{ month }} 月 {{ day }} 日 {{ hour }}:{{ minute }}:{{ second }} ~~',
+    '   荟平   几点了? {{ year }} 年 {{ month }} 月 {{ day }} 日 {{ hour }}:{{ minute }}:{{ second }} ~~',
     {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
