@@ -4,7 +4,7 @@ updateTime();
 function updateTime() {
   var date = new Date();
   renderer.render(
-    '许强  几点了?  ' 
+    '许强  几点了? ',
     '{{ year }} 年 {{ month }} 月 {{ day }} 日 {{ hour }}:{{ minute }}:{{ second }} ~~',
     {
       year: date.getFullYear(),
