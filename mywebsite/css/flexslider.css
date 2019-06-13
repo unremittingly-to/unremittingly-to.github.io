@@ -101,7 +101,7 @@ display: block;
     border-radius: 15px;
     font-weight: 600;
 }
-.flex-control-nav li:first-child:before {
+/*.flex-control-nav li:first-child:before {
     content: '';
     background: #fff;
     width: 2px;
@@ -109,12 +109,12 @@ display: block;
     position: absolute;
     top: -531%;
     left: 43%;
-    /* transform: rotate(-90deg); 
+     transform: rotate(-90deg); 
     -webkit-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg); */
-}
+    -o-transform: rotate(-90deg); 
+}*/
 .flex-control-paging li a.flex-active { 
 	background:#0bedff; 
 	cursor: default;
