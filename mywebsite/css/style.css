@@ -340,7 +340,7 @@ label.wel {
 .numscroller {
 	text-align:left;
 	margin-left:84px;
-	font-size: 1.5em;
+	font-size: -1.5em;
 	    color: #333;
     font-weight: 300;
 }
@@ -416,14 +416,14 @@ p.stats-info {
 }
 .cruise-w3-agile h3 {
     color: #fff;
-    font-size: 35px;
+    font-size: 14px;
     font-weight: 600;
     text-align: center;
-    width: 42%;
-    line-height: 40px;
+    width: 87%;
+    line-height: 19px;
     letter-spacing: 4px;
-    margin: 0 auto;
-    padding: 35px 0;
+    margin: 35px auto;
+   /** padding: 35px 0;**/
 }
 label.cru {
     background: #0bedff;
@@ -827,9 +827,14 @@ option{
     padding: 30px;
 }
 /*--//modal--*/
+
 /* map */
 .map {
+	 background: url(../images/a1.jpg) no-repeat 0px 0px;
     position: relative;
+	 width:100%;
+    height:40%;
+    background-size:100% 100%;
 }
 .map iframe {
     width: 100%;
