@@ -18,7 +18,9 @@
 <!-- //font-awesome-icons -->
 	<link href="http://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
+
 <style>
+
     #time {
       position: relative;
       margin: 0 auto;
@@ -33,9 +35,139 @@
     }
   </style>
 </head>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/html2canvas.js"></script>
+	<script type="text/javascript">
+	function sandbox(img){
+	if(img=="img1"){
+	var content = document.getElementById("Img1");
+	}
+	if(img=="img2"){
+	var content = document.getElementById("Img2");
+	}
+	if(img=="img3"){
+	var content = document.getElementById("Img3");
+	}
+	if(img=="img4"){
+	var content = document.getElementById("Img4");
+	}
 	
+	html2canvas(content, { useCORS: true, scale: 2 }).then(function (canvas) {
+			var dataUrl = canvas.toDataURL('image/jpeg', 1.0) //image/jpeg 保存文件类型，图片的格式    0-1，表示生成的图片的质量，取值0到1，
+ 
+			//$("#images").attr("src", dataUrl);
+			saveFile(dataUrl, '下载');
+		});
+
+var saveFile = function (data, filename) {
+	if (myBrowser() == "IE") {   // if browser is IE
+			function dataURLtoBlob(dataurl) {
+				var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+					bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+				while (n--) {
+					u8arr[n] = bstr.charCodeAt(n);
+				}
+				return new Blob([u8arr], { type: mime });
+			}
+			var blob_ = dataURLtoBlob( data); // 用到Blob是因为图片文件过大时，在一部风浏览器上会下载失败，而Blob就不会
+			var url;
+			url = {
+				name: filename, // 图片名称不需要加.png后缀名
+				src: blob_
+			};
+			navigator.msSaveBlob(url.src, url.name + '.png');//filename文件名包括扩展名，下载路径为浏览器默认路径
+		} else {
+var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+			save_link.href = data;
+			save_link.download = filename;
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+			save_link.dispatchEvent(event);
+
+
+
+	
+}
+};
+
+       
+	};
+	
+	function myBrowser() {
+		var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+		var isOpera = userAgent.indexOf("Opera") > -1;
+		if (isOpera) {
+			return "Opera"
+		}; //判断是否Opera浏览器
+		if (userAgent.indexOf("Firefox") > -1) {
+			return "FF";
+		} //判断是否Firefox浏览器
+		if (userAgent.indexOf("Chrome") > -1) {
+			return "Chrome";
+		}
+		if (userAgent.indexOf("Safari") > -1) {
+			return "Safari";
+		} //判断是否Safari浏览器
+		if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+			return "IE";
+		}; //判断是否IE浏览器
+		if (userAgent.indexOf("Trident") > -1) {
+			return "Edge";
+		} //判断是否Edge浏览器
+	}
+
+
+//浏览器适用       
+ contextClass = window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+ try {
+       var context = new contextClass();
+       var source = null;
+       var audioBuffer = null;
+       function stopSound() {
+            if (source) {
+                source.stop(musics); //立即停止
+             }
+      		}
+      function playSound() {
+                source = context.createBufferSource();
+                source.buffer = audioBuffer;
+                source.loop = true;
+                source.connect(context.destination);
+                source.start(0); //立即播放    
+            }
+      function initSound(arrayBuffer) {
+                context.decodeAudioData(arrayBuffer, function (buffer) { //解码成功时的回调函数
+                    audioBuffer = buffer;
+                    playSound();
+                }, function (e) { //解码出错时的回调函数
+                    console.log('404', e);
+                });
+            }
+      function loadAudioFile(url) {
+                var xhr = new XMLHttpRequest(); //通过XHR下载音频文件
+                xhr.open('GET', url, true);
+                xhr.responseType = 'arraybuffer';
+				xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        xhr.setRequestHeader("X-Requested-With","XMLHttpRequest");
+       xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');
+        xhr.setRequestHeader("Accept","*/*");
+        xhr.setRequestHeader('Access-Control-Allow-Methods','POST, GET, OPTIONS');
+     //  xhr.setRequestHeader('Content-Type', 'image/jpeg');
+                xhr.onload = function (e) { //下载完成
+                    initSound(this.response);
+                };
+                xhr.send();
+            }
+            //这里用来存储背景音乐的路径
+            loadAudioFile('mp3/background.mp3');
+ } catch (e) {
+      console.log('无法找到音乐！');
+ }
+
+	</script>
 <body>
 <!-- banner -->
+<audio id="mya"  src="mp3/background.mp3"   autoplay></audio>
 	<div class="banner jarallax" id="home">
 	<div class="agile_dot_info one">
 		<div class="container">
@@ -54,7 +186,7 @@
 					<nav class="link-effect-8" id="link-effect-8">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="index.html">我的</a></li>
-							<li><a href="#about" class="scroll">关于</a></li>
+							<li><a href="#about" id="myVideos" class="scroll">关于</a></li>
 							<li><a href="#services"  class="scroll">技能</a></li>
 							<li><a href="#gallery"  class="scroll">经历</a></li>
 								<li><a href="#evaluation"  class="scroll">自我评价</a></li>
@@ -366,62 +498,63 @@
 	<div class="team" id="team">
 		<div class="container">
 	<div class="w3-head-left">
-		<h3>Team</h3>
+		<h3>图册</h3>
 	</div>
 		<div class="col-md-12 agile_team_grid">	
-			<ul id="flexiselDemo1">	
+			<ul id="flexiselDemo1" class="slides">	
 				<li>
 					<div class="hovereffect1 w3ls_banner_bottom_grid">
-						<img src="images/m1.jpg" alt=" " class="img-responsive" />
+						<img src="images/m1.jpg" id="Img1" alt=" " class="img-responsive" />
 						<div class="overlay">
-							<h4>mohamad Ali</h4>
+							<h4   >mohamad Ali</h4>
+							<!--<input type="button" value="保存" id="saveasd" οnclick="saveasd();" /><br/>-->
 							<ul class="social_agileinfo">
-								<li><a href="#" class="w3_facebook"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#" class="w3_twitter"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
-								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>
+								<li><a  class="w3_facebook" href="images/m1.jpg"><i  class="fa fa-arrows-alt" ></i></a></li>
+								<li ><a class="w3_twitter" onclick="sandbox('img1');"><i class="fa fa-arrow-down"></i></a></li>
+								<!--<li><a  class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
+								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>-->
 							</ul>
 						</div>
 					</div>
 				</li>
 				<li>
 					<div class="hovereffect1 w3ls_banner_bottom_grid">
-						<img src="images/m2.jpg" alt=" " class="img-responsive" />
+						<img src="images/m2.jpg"  id="Img2"alt=" " class="img-responsive" />
 						<div class="overlay">
 							<h4>Stokes Thomas</h4>
 							<ul class="social_agileinfo">
-								<li><a href="#" class="w3_facebook"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#" class="w3_twitter"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
-								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="images/m2.jpg" class="w3_facebook"><i class="fa fa-arrows-alt"></i></a></li>
+								<li><a  class="w3_twitter" onclick="sandbox('img2');"><i class="fa fa-arrow-down"></i></a></li>
+								<!--<li><a href="#" class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
+								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>-->
 							</ul>
 						</div>
 					</div>
 				</li>
 				<li>
 					<div class="hovereffect1 w3ls_banner_bottom_grid">
-						<img src="images/m3.jpg" alt=" " class="img-responsive" />
+						<img src="images/m3.jpg" id="Img3" alt=" " class="img-responsive" />
 						<div class="overlay">
 							<h4>Michael Kohli</h4>
 							<ul class="social_agileinfo">
-								<li><a href="#" class="w3_facebook"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#" class="w3_twitter"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
-								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="images/m3.jpg" class="w3_facebook"><i class="fa fa-arrows-alt"></i></a></li>
+								<li><a  class="w3_twitter"  onclick="sandbox('img3');"><i class="fa fa-arrow-down"></i></a></li>
+								<!--<li><a href="#" class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
+								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>-->
 							</ul>
 						</div>
 					</div>
 				</li>
 				<li>
 					<div class="hovereffect1 w3ls_banner_bottom_grid">
-						<img src="images/m4.jpg" alt=" " class="img-responsive" />
+						<img src="images/m4.jpg" id="Img4" alt=" " class="img-responsive" />
 						<div class="overlay">
 							<h4>Saha Carl</h4>
 							<ul class="social_agileinfo">
-								<li><a href="#" class="w3_facebook"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#" class="w3_twitter"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
-								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="images/m3.jpg" class="w3_facebook"><i class="fa fa-arrows-alt"></i></a></li>
+								<li><a class="w3_twitter"  onclick="sandbox('img4');"><i class="fa fa-arrow-down"></i></a></li>
+								<!--<li><a href="#" class="w3_instagram"><i class="fa fa-instagram"></i></a></li>
+								<li><a href="#" class="w3_google"><i class="fa fa-google-plus"></i></a></li>-->
 							</ul>
 						</div>
 					</div>
@@ -528,10 +661,10 @@
 			</div>
 			<div class="col-md-3 w3l-social">
 				<ul class="top-right-info-w3ls">
-					<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-					<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-					<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-					<li><a href="#"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a></li>
+					<li><a href="https://wx.qq.com/"><i class="fa fa-comments-o" aria-hidden="true"></i></a></li>
+					<li><a href="#"><i class="fa fa-refresh " aria-hidden="true"></i></a></li>
+					<li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+					<li><a href="#"><i class="fa fa-battery-4" aria-hidden="true"></i></a></li>
 				</ul>
 			</div>
 
@@ -586,8 +719,14 @@
 	<!-- //swipe box js -->
 <!-- flexisel -->
 	<script type="text/javascript">
+	
+
 			$(window).load(function() {
+			
+			
+			
 				$("#flexiselDemo1").flexisel({
+				 
 					visibleItems: 3,
 					animationSpeed: 1000,
 					autoPlay:true,
@@ -595,17 +734,25 @@
 					pauseOnHover: true,
 					enableResponsiveBreakpoints: true,
 					responsiveBreakpoints: { 
+					mobile: {
+						  changePoint:768,
+						  visibleItems: 1,
+						  itemsToScroll: 1
+						},
 						portrait: { 
 							changePoint:480,
-							visibleItems: 1
+							visibleItems: 1,
+							itemsToScroll: 1
 						}, 
 						landscape: { 
 							changePoint:640,
-							visibleItems:2
+							visibleItems:2,
+							itemsToScroll: 2
 						},
 						tablet: { 
 							changePoint:768,
-							visibleItems: 2
+							visibleItems: 3,
+							itemsToScroll: 3
 						}
 					}
 				});
@@ -618,7 +765,10 @@
 	<script type="text/javascript" src="js/easing.js"></script>
 	<!-- here stars scrolling icon -->
 	<script type="text/javascript">
+	
+	
 		$(document).ready(function() {
+		
 			/*
 				var defaults = {
 				containerID: 'toTop', // fading element id
